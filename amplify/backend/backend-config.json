@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"crosscam53f476d8": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}

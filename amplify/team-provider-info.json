@@ -1,0 +1,20 @@
+{
+    "crosscam": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-crosscam-crosscam-141422-authRole",
+            "UnauthRoleArn": "arn:aws:iam::805643243008:role/amplify-crosscam-crosscam-141422-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::805643243008:role/amplify-crosscam-crosscam-141422-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-crosscam-crosscam-141422-deployment",
+            "UnauthRoleName": "amplify-crosscam-crosscam-141422-unauthRole",
+            "StackName": "amplify-crosscam-crosscam-141422",
+            "StackId": "arn:aws:cloudformation:us-west-2:805643243008:stack/amplify-crosscam-crosscam-141422/05594f10-4de5-11ea-a793-0aa7561f3002",
+            "AmplifyAppId": "d16s27dn88g2lp"
+        },
+        "categories": {
+            "auth": {
+                "crosscam53f476d8": {}
+            }
+        }
+    }
+}
