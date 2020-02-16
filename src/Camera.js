@@ -30,11 +30,11 @@ export default class Camera extends React.Component {
         });
     }
 
-    swapMode = async() => {
+    swapMode = () => {
         if (this.state.swap_icon == 'camera-alt')
-            await this.setStateAsync({swap_icon: 'videocam', capture_mode: 'video'});
+            this.setState({swap_icon: 'videocam', capture_mode: 'video'});
         else
-            await this.setStateAsync({swap_icon: 'camera-alt', capture_mode: 'picture'})
+            this.setState({swap_icon: 'camera-alt', capture_mode: 'picture'})
     }
 
     takePicture = async() => {
@@ -49,11 +49,11 @@ export default class Camera extends React.Component {
     takeVideo = async() => {
         if (this.camera) {
             if (this.state.recording == false) {
-                await this.setStateAsync({recording: true, capture_button_color: 'red'});
+                this.setState({recording: true, capture_button_color: 'red'});
                 const data = await this.camera.recordAsync();
                 Alert.alert(data.uri)
             } else {
-                await this.setStateAsync({recording: false, capture_button_color: 'white'});
+                this.setState({recording: false, capture_button_color: 'white'});
                 await this.camera.stopRecording();
             }
         } else {
