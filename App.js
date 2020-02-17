@@ -7,16 +7,23 @@
  */
 
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
+import { withAuthenticator } from 'aws-amplify-react-native'
 
 import Camera from './src/Camera';
 
+//creates a stack for navigation
 const Stack = createStackNavigator();
 
-function App() {
+//configures aws amplify with the generate aws-exports file
+Amplify.configure(awsconfig);
+
+//functional component to handle the stack navigation
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -26,4 +33,6 @@ function App() {
   )
 }
 
-export default App;
+/* TODO: implement custom login screen */
+//uses the default aws cognito login screen
+export default withAuthenticator(App);
