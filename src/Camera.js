@@ -24,6 +24,18 @@ export default class Camera extends React.Component {
             height: Dimensions.get('window').height, 
             width: Dimensions.get('window').width
         });
+
+        this.getList();
+    }
+
+    getList = async() => {
+        await Storage.list('', { level: 'public' })
+            .then((result) => {
+                this.list = []
+                for (var i in result) {
+                    this.list.push(result[i]['key']);
+                };
+            });
     }
 
     //swaps between the picture and video mode
@@ -49,7 +61,7 @@ export default class Camera extends React.Component {
     takePicture = async() => {
         if (this.camera) {
             //takes a pictre and returns a promise
-            const data = await this.camera.takePictureAsync();
+            const data = await this.camera.takePictureAsync({quality: .5});
             //retrieves the image uri from the promise
             const respone = await fetch(data.uri);
             //retrieves image from the uri
