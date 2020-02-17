@@ -15,6 +15,7 @@ import awsconfig from './aws-exports';
 import { withAuthenticator } from 'aws-amplify-react-native'
 
 import Camera from './src/Camera';
+import Gallery from './src/Gallery';
 
 //creates a stack for navigation
 const Stack = createStackNavigator();
@@ -27,7 +28,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Home' component={Camera} options={{headerShown: false}}/>
+        <Stack.Screen name='Camera' component={Camera} options={{headerShown: false}}/>
+        <Stack.Screen name='Gallery' component={Gallery} />
       </Stack.Navigator>
     </NavigationContainer>
   )

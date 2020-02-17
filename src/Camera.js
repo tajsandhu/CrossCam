@@ -34,6 +34,17 @@ export default class Camera extends React.Component {
             this.setState({swap_icon: 'camera-alt', capture_mode: 'picture'})
     }
 
+    getCurrentDate = () => {
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+        var hour = new Date().getHours();
+        var minute = new Date().getMinutes();
+        var second = new Date().getSeconds();
+        var mili = new Date().getMilliseconds();
+        return ''.concat(date, '-', month, '-', year, '-', hour, ':', second, ':', mili);
+    }
+
     //captures an image and stores it in s3
     takePicture = async() => {
         if (this.camera) {
@@ -43,9 +54,11 @@ export default class Camera extends React.Component {
             const respone = await fetch(data.uri);
             //retrieves image from the uri
             const blob = await respone.blob();
+
+            const title = ''.concat(this.getCurrentDate(), '.jpeg');
             //stores the image in an s3 bucket
             //logs an error if one occers
-            Storage.put('yourKeyHere.jpeg', blob, {
+            Storage.put(title, blob, {
                 contentType: 'image/jpeg',})
             .then (result => console.log(result))
             .catch(err => console.log(err));
@@ -62,7 +75,7 @@ export default class Camera extends React.Component {
                 //change the state to reflect a new recording starting
                 this.setState({recording: true, capture_button_color: 'red'});
                 //begins a recording and returns a promise on completion
-                const data = await this.camera.recordAsync();
+                const data = await this.camera.recordAsync({quality: .5});
                 //for testing only, displays the uri
                 Alert.alert(data.uri)
             } else {
@@ -106,6 +119,13 @@ export default class Camera extends React.Component {
                         size={30}
                         />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Gallery')} style={styles.gallery_button}>
+                    <Icon 
+                        name='photo-album'
+                        color='white'
+                        size={60}
+                        />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -129,6 +149,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 15,
         right: 15,
+    },
+
+    gallery_button: {
+        position: 'absolute',
+        bottom: 15,
+        left: 15,
     }
 
 })
