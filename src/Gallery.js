@@ -60,9 +60,10 @@ export default class Gallery extends React.Component {
                     data={this.state.images}
                     numColumns={3}
                     renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => this.expandImage(item)}>
+                        <TouchableOpacity onPress={() => this.expandImage(item)}
+                            style={[{width: (this.state.width/3), height: (this.state.width/3)}, styles.image_pane]}>
                             <FastImage
-                                style={{width: (this.state.width/3), height: (this.state.width/3),}}
+                                style={styles.image}
                                 source={{uri:item}}
                             />
                         </TouchableOpacity>
@@ -78,5 +79,13 @@ const styles = StyleSheet.create({
     gallery_container: {
         flex: 1,
         flexDirection: 'column'
+    },
+    image_pane: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },   
+    image: {
+        width: '95%',
+        height: '95%'
     }
 })
