@@ -1,7 +1,6 @@
 import React from 'react';
-import { S3Image } from 'aws-amplify-react-native';
 import { Storage } from 'aws-amplify';
-import { View, StyleSheet, Alert, ScrollView, FlatList } from 'react-native';
+import { View, StyleSheet, Alert, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 export default class Gallery extends React.Component {
@@ -10,6 +9,7 @@ export default class Gallery extends React.Component {
         super(props);
         this.state = {
             images: '',
+            width: Dimensions.get('window').width,
         }
         this.images = [];
         this.list = [];
@@ -49,18 +49,23 @@ export default class Gallery extends React.Component {
             });
     }
 
-    
+    expandImage = (url) => {
+        this.props.navigation.navigate('Image', {link: url});
+    }
 
     render() {
         return(
             <View style={{flex: 1}}>
                 <FlatList
                     data={this.state.images}
+                    numColumns={3}
                     renderItem={({item}) => (
-                        <FastImage
-                            style={{width: 500, height: 500}}
-                            source={{uri:item}}
-                        />
+                        <TouchableOpacity onPress={() => this.expandImage(item)}>
+                            <FastImage
+                                style={{width: (this.state.width/3), height: (this.state.width/3),}}
+                                source={{uri:item}}
+                            />
+                        </TouchableOpacity>
                     )}
                 />
             </View>

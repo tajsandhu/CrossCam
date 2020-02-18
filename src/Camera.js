@@ -24,18 +24,6 @@ export default class Camera extends React.Component {
             height: Dimensions.get('window').height, 
             width: Dimensions.get('window').width
         });
-
-        this.getList();
-    }
-
-    getList = async() => {
-        await Storage.list('', { level: 'public' })
-            .then((result) => {
-                this.list = []
-                for (var i in result) {
-                    this.list.push(result[i]['key']);
-                };
-            });
     }
 
     //swaps between the picture and video mode

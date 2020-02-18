@@ -16,6 +16,7 @@ import { withAuthenticator } from 'aws-amplify-react-native'
 
 import Camera from './src/Camera';
 import Gallery from './src/Gallery';
+import FullImage from './src/FullImage';
 
 //creates a stack for navigation
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen name='Camera' component={Camera} options={{headerShown: false}}/>
         <Stack.Screen name='Gallery' component={Gallery} />
+        <Stack.Screen name='Image' component={FullImage} />
       </Stack.Navigator>
     </NavigationContainer>
   )
