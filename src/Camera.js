@@ -3,8 +3,10 @@ import { View, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-nat
 import { RNCamera } from 'react-native-camera';
 import { Icon } from 'react-native-elements';
 import { Storage } from 'aws-amplify';
+import { useIsFocused } from '@react-navigation/native';
 
-export default class Camera extends React.Component {
+
+class CameraView extends React.Component {
     
     constructor(props) {
         super(props);
@@ -15,6 +17,7 @@ export default class Camera extends React.Component {
             capture_button_color: 'white',
             capture_mode: 'picture',
             swap_icon: 'camera-alt',
+            focus: false,
         }
     }
 
@@ -24,7 +27,9 @@ export default class Camera extends React.Component {
             height: Dimensions.get('window').height, 
             width: Dimensions.get('window').width
         });
+
     }
+    
 
     //swaps between the picture and video mode
     swapMode = () => {
@@ -96,15 +101,17 @@ export default class Camera extends React.Component {
         else
             await this.takeVideo();
     }
+
     
     
     render() {
+        const { isFocused } = this.props;
         return(
             <View style={styles.camera_container}>
-                <RNCamera
+                {isFocused && <RNCamera
                     style={{height: this.state.width, width: this.state.width}}
                     ref={ref => {this.camera = ref;}}
-                    />
+                />}
                 <TouchableOpacity onPress={this.capture} style={styles.capture_button}>
                     <Icon  
                         name='camera'
@@ -158,3 +165,8 @@ const styles = StyleSheet.create({
     }
 
 })
+
+export default function Camera(props) {
+    const isFocused = useIsFocused();
+    return <CameraView {...props} isFocused={isFocused} />;
+}
