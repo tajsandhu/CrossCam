@@ -112,6 +112,13 @@ class CameraView extends React.Component {
                     style={{height: this.state.width, width: this.state.width}}
                     ref={ref => {this.camera = ref;}}
                 />}
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Settings')} style={styles.settings_button}>
+                    <Icon
+                        name='settings'
+                        color='white'
+                        size={45}
+                        />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={this.capture} style={styles.capture_button}>
                     <Icon  
                         name='camera'
@@ -162,6 +169,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 15,
         left: 15,
+    },
+
+    settings_button: {
+        position: 'absolute',
+        top: 15,
+        right: 15
     }
 
 })

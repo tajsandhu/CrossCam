@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import FastImage from 'react-native-fast-image';
-import { BaseRouter } from '@react-navigation/native';
 
 export default class FullImage extends React.Component {
     constructor(props) {
@@ -24,9 +24,16 @@ export default class FullImage extends React.Component {
     render() {
         return (
             <View style={styles.main_container}>
-                <FastImage
-                    style={{width: this.state.width, height: (this.state.width*this.state.ratio)}}
-                    source={{uri: this.state.img}}/>
+                <ReactNativeZoomableView 
+                    maxZoom={1.5}
+                    minZoom={1}
+                    zoomStep={0.5}
+                    initialZoom={1}
+                    style={styles.image_container}>
+                    <FastImage
+                        style={{width: this.state.width, height: (this.state.width*this.state.ratio)}}
+                        source={{uri: this.state.img}}/>
+                </ReactNativeZoomableView>
             </View>
         )
     }
@@ -35,7 +42,10 @@ export default class FullImage extends React.Component {
 const styles = StyleSheet.create({
     main_container: {
         flex: 1,
-        backgroundColor: 'yellow',
+        backgroundColor: 'black',
         justifyContent:'center'
+    },
+    image_container: {
+        flex: 1
     }
 })
