@@ -18,6 +18,9 @@ import Gallery from './src/Gallery';
 import FullImage from './src/FullImage';
 import Settings from './src/Settings';
 import Login from './src/Login';
+import AuthLoading from './src/AuthLoading';
+
+Amplify.configure(awsconfig);
 
 //creates a stack for navigation
 const Stack = createStackNavigator();
@@ -26,7 +29,8 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={'Loading'}>
+        <Stack.Screen name='Loading' component={AuthLoading} />
         <Stack.Screen name='Camera' component={Camera} options={{headerShown: false}}/>
         <Stack.Screen name='Login' component={Login} options={{headerShown: false}}/>
         <Stack.Screen name='Gallery' component={Gallery} />
