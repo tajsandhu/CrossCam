@@ -19,6 +19,8 @@ import FullImage from './src/FullImage';
 import Settings from './src/Settings';
 import Login from './src/Login';
 import AuthLoading from './src/AuthLoading';
+import Signup from './src/Signup';
+import Confirm from './src/Confirm';
 
 Amplify.configure(awsconfig);
 
@@ -36,6 +38,8 @@ const App = () => {
         <Stack.Screen name='Gallery' component={Gallery} />
         <Stack.Screen name='Image' component={FullImage} />
         <Stack.Screen name='Settings' component={Settings} />
+        <Stack.Screen name='Signup' component={Signup} />
+        <Stack.Screen name='Confirm' component={Confirm} />
       </Stack.Navigator>
     </NavigationContainer>
   )
