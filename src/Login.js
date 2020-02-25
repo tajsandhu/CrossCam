@@ -13,8 +13,11 @@ export default class Login extends React.Component {
         }
     }
 
+    //Signs in the user
     signIn = async() => {
         if (this.state.email != '' && this.state.password != '') {
+            //auth returns a promise after a successful sign in
+            //otherwise an error is thrown
             await Auth.signIn(this.state.email, this.state.password)
                 .then(() => this.props.navigation.navigate('Camera'))
                 .catch(() => Alert.alert('Invalid Username or Password'));

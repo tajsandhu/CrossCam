@@ -12,13 +12,16 @@ export default class Confirm extends React.Component {
         }
     }
 
+    //confirms a code to complete user sign up
     confirm = async() => {
         if (this.state.email != '' && this.state.code != '') {
+            //returns a promise if the email and the code match
+            //otherwise an error is thrown
             await Auth.confirmSignUp(
                 this.state.email,
                 this.state.code)
                 .then(() => this.props.navigation.navigate('Login'))
-                .catch(() => Alert.alert('Invalid Username or Password'));
+                .catch(() => Alert.alert('Code and email do not match'));
         } else {
             Alert.alert('Please fill all fields');
         }
