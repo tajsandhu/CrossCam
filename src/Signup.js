@@ -14,7 +14,15 @@ export default class Signup extends React.Component {
     }
 
     signup = async() => {
-        this.props.navigation.navigate('Confirm')
+        if (this.state.email != '' && this.state.password != '' && this.state.confirm == this.state.password) {
+            await Auth.signUp({
+                username: this.state.email,
+                password: this.state.password})
+                .then(() => this.props.navigation.navigate('Confirm'))
+                .catch(() => Alert.alert('Invalid Username or Password'));
+        } else {
+            Alert.alert('Please fill all fields');
+        }
     }
 
     render() {

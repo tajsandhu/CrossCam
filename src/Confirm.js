@@ -13,7 +13,15 @@ export default class Confirm extends React.Component {
     }
 
     confirm = async() => {
-        this.props.navigation.navigate('Login')
+        if (this.state.email != '' && this.state.code != '') {
+            await Auth.confirmSignUp(
+                this.state.email,
+                this.state.code)
+                .then(() => this.props.navigation.navigate('Login'))
+                .catch(() => Alert.alert('Invalid Username or Password'));
+        } else {
+            Alert.alert('Please fill all fields');
+        }
     }
 
     render() {
