@@ -47,7 +47,6 @@ export default class Confirm extends React.Component {
                 <Input 
                     placeholder='Code'
                     placeholderTextColor='#b3b3b3'
-                    secureTextEntry={true}
                     autoCompleteType='off'
                     onChangeText={data => {this.setState({code: data})}}
                     containerStyle={styles.input_container} 
@@ -55,11 +54,11 @@ export default class Confirm extends React.Component {
                     leftIcon={
                         <Icon
                             type='material-community'
-                            name='lock-outline'
+                            name='pound'
                             color='#f0f0f0'/>}
                     />
                 <Button title='Confirm'
-                    onPress={() => this.signup()} 
+                    onPress={() => this.confirm()} 
                     containerStyle={{width: '95%'}}
                     buttonStyle={styles.button}/>  
             </View>

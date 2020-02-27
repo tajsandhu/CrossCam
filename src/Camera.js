@@ -19,7 +19,8 @@ class CameraView extends React.Component {
             swap_icon: 'camera-alt',
             focus: false,
             zoom: 0,
-            flash: true
+            flash: 'auto',
+            flash_icon: 'flash-auto'
         }
     }
 
@@ -104,7 +105,15 @@ class CameraView extends React.Component {
             await this.takeVideo();
     }
 
-    
+    flash = async() => {
+        if (this.state.flash == 'auto') {
+            this.setState({flash: 'on', flash_icon: 'flash'})
+        } else if(this.state.flash == 'on') {
+            this.setState({flash: 'off', flash_icon: 'flash-off'})
+        } else {
+            this.setState({flash: 'auto', flash_icon: 'flash-auto'})
+        }
+    }
     
     render() {
         const { isFocused } = this.props;
@@ -113,10 +122,12 @@ class CameraView extends React.Component {
                 {isFocused && <RNCamera
                     style={{height: this.state.width, width: this.state.width}}
                     ref={ref => {this.camera = ref;}}
+                    zoom={this.state.zoom}
+                    flashMode={this.state.flash}
                 />}
-                <TouchableOpacity onPress={()=>{}} style={styles.flash_button}>
+                <TouchableOpacity onPress={()=>{}} style={styles.flash_button} onPress={() => this.flash()}>
                     <Icon
-                        name='flash'
+                        name={this.state.flash_icon}
                         type='material-community'
                         color='white'
                         size={45}
@@ -155,7 +166,7 @@ class CameraView extends React.Component {
                         value={this.state.zoom}
                         onValueChange={value => this.setState({zoom: value})}
                         minimumValue={0}
-                        maximumValue={1}
+                        maximumValue={.99}
                         orientation={'vertical'}
                         style={{height: 200}}
                         />

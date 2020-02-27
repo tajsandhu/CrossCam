@@ -65,7 +65,7 @@ export default class Login extends React.Component {
                     containerStyle={{width: '95%'}}
                     buttonStyle={styles.button}/>  
                 <Text  style={styles.text}>Forgot Password?</Text>
-                <Text style={[styles.text, styles.register_text]}>Need an account? Register</Text>
+                <Text style={[styles.text, styles.register_text]} onPress={()=>{this.props.navigation.navigate('Signup')}} >Need an account? Register</Text>
             </View>
         )
     }
