@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify'
 export default class Settings extends React.Component {
 
     logout = async() => {
-        await Auth.signOut().then(data => console.log('Logged out'));
+        await Auth.signOut().then(data => this.props.navigation.navigate('Login'));
     }
     render() {
         return (

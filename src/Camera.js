@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { Icon } from 'react-native-elements';
+import { Icon, Slider } from 'react-native-elements';
 import { Storage } from 'aws-amplify';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -18,6 +18,8 @@ class CameraView extends React.Component {
             capture_mode: 'picture',
             swap_icon: 'camera-alt',
             focus: false,
+            zoom: 0,
+            flash: true
         }
     }
 
@@ -112,6 +114,14 @@ class CameraView extends React.Component {
                     style={{height: this.state.width, width: this.state.width}}
                     ref={ref => {this.camera = ref;}}
                 />}
+                <TouchableOpacity onPress={()=>{}} style={styles.flash_button}>
+                    <Icon
+                        name='flash'
+                        type='material-community'
+                        color='white'
+                        size={45}
+                        />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('Settings')} style={styles.settings_button}>
                     <Icon
                         name='settings'
@@ -140,6 +150,16 @@ class CameraView extends React.Component {
                         size={60}
                         />
                 </TouchableOpacity>
+                <View style={styles.zoom_slider}>
+                    <Slider
+                        value={this.state.zoom}
+                        onValueChange={value => this.setState({zoom: value})}
+                        minimumValue={0}
+                        maximumValue={1}
+                        orientation={'vertical'}
+                        style={{height: 200}}
+                        />
+                </View>
             </View>
         )
     }
@@ -175,7 +195,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         right: 15
-    }
+    },
+
+    zoom_slider: {
+        position: 'absolute',
+        right: 15
+    },
+
+    flash_button: {
+        position: 'absolute',
+        top: 15,
+        left: 15
+    },
 
 })
 
