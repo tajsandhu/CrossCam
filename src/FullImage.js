@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity, Alert } from 'react-native';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import FastImage from 'react-native-fast-image';
+import { Icon } from 'react-native-elements';
+import { Storage } from 'aws-amplify';
 
 export default class FullImage extends React.Component {
     constructor(props) {
@@ -21,6 +23,13 @@ export default class FullImage extends React.Component {
         });
     }
 
+    deleteImage = async() => {
+        await Storage.remove(this.props.route.params.name)
+            .then(() => this.props.route.params.refreshFunction())
+            .then(() => this.props.navigation.navigate('Gallery'))
+            .catch(() => Alert.alert('Deletion Failed'));
+    }
+
     render() {
         return (
             <View style={styles.main_container}>
@@ -34,6 +43,13 @@ export default class FullImage extends React.Component {
                         style={{width: this.state.width, height: (this.state.width*this.state.ratio)}}
                         source={{uri: this.state.img}}/>
                 </ReactNativeZoomableView>
+                <TouchableOpacity style={styles.delete_button} onPress={() => this.deleteImage()}>
+                    <Icon
+                        name='delete-outline'
+                        type='material-community'
+                        color='white'
+                        size={30}/>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -47,5 +63,10 @@ const styles = StyleSheet.create({
     },
     image_container: {
         flex: 1
+    },
+    delete_button: {
+        position: 'absolute',
+        right: 15,
+        bottom: 15
     }
 })

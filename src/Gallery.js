@@ -2,20 +2,26 @@ import React from 'react';
 import { Storage } from 'aws-amplify';
 import { View, StyleSheet, Alert, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { useIsFocused } from '@react-navigation/native';
 
-export default class Gallery extends React.Component {
+class GalleryView extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             images: '',
             width: Dimensions.get('window').width,
+            listView: <View/>
         }
         this.images = [];
         this.list = [];
     }
 
     async componentDidMount() {
+        await this.refreshList()
+    }
+
+    refreshList = async() => {
         //gets the names off all the images
         await this.getList();
         //gets a url for al of the images
@@ -33,7 +39,8 @@ export default class Gallery extends React.Component {
 
     //obtains a url for an image based on the name
     getImage = async(name) => {
-        const data = await Storage.get(name);
+        const img = await Storage.get(name);
+        const data = [name, img]
         return data;
     }
 
@@ -49,8 +56,14 @@ export default class Gallery extends React.Component {
             });
     }
 
-    expandImage = (url) => {
-        this.props.navigation.navigate('Image', {link: url});
+    expandImage = (data) => {
+        this.props.navigation.navigate('Image', {name: data[0], link: data[1], refreshFunction: this.refresh});
+    }
+
+    refresh = async() => {
+        /*await this.refreshList()
+        .then(() => this.forceUpdate())
+        .catch(() => Alert.alert('Refresh Failed'))*/
     }
 
     render() {
@@ -64,7 +77,7 @@ export default class Gallery extends React.Component {
                             style={[{width: (this.state.width/3), height: (this.state.width/3)}, styles.image_pane]}>
                             <FastImage
                                 style={styles.image}
-                                source={{uri:item}}
+                                source={{uri:item[1]}}
                             />
                         </TouchableOpacity>
                     )}
@@ -89,3 +102,9 @@ const styles = StyleSheet.create({
         height: '95%'
     }
 })
+
+
+export default function Gallery(props) {
+    const isFocused = useIsFocused();
+    return <GalleryView {...props} isFocused={isFocused} />;
+}
