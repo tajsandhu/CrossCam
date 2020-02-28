@@ -3,6 +3,8 @@ import { View, StyleSheet, Dimensions, Image, TouchableOpacity, Alert } from 're
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import FastImage from 'react-native-fast-image';
 import { Icon } from 'react-native-elements';
+import CameraRoll from "@react-native-community/cameraroll";
+import { RNFetchBlob } from 'rn-fetch-blob';
 import { Storage } from 'aws-amplify';
 
 export default class FullImage extends React.Component {
@@ -30,6 +32,15 @@ export default class FullImage extends React.Component {
             .catch(() => Alert.alert('Deletion Failed'));
     }
 
+    downloadImage = () => {
+        let dirs = RNFetchBlob.fs.dirs;
+        RNFetchBlob
+            .config({
+                path: dirs.DownloadDir + "/path-to-file.png",
+                fileCache: true,
+            }).fetch('GET', this.props.route.params.link)
+    }
+
     render() {
         return (
             <View style={styles.main_container}>
@@ -46,6 +57,13 @@ export default class FullImage extends React.Component {
                 <TouchableOpacity style={styles.delete_button} onPress={() => this.deleteImage()}>
                     <Icon
                         name='delete-outline'
+                        type='material-community'
+                        color='white'
+                        size={30}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.download_button} onPress={() => this.downloadImage()}>
+                    <Icon
+                        name='download-outline'
                         type='material-community'
                         color='white'
                         size={30}/>
@@ -67,6 +85,11 @@ const styles = StyleSheet.create({
     delete_button: {
         position: 'absolute',
         right: 15,
+        bottom: 15
+    },
+    download_button: {
+        position: 'absolute',
+        left: 15,
         bottom: 15
     }
 })
