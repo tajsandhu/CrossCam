@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { Icon } from 'react-native-elements';
 import CameraRoll from "@react-native-community/cameraroll";
 import { Storage } from 'aws-amplify';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class FullImage extends React.Component {
     constructor(props) {
@@ -29,6 +30,20 @@ export default class FullImage extends React.Component {
             .then(() => this.props.route.params.refreshFunction())
             .then(() => this.props.navigation.navigate('Gallery'))
             .catch(() => Alert.alert('Deletion Failed'));
+    }
+
+    downloadImage = async() => {
+        await RNFetchBlob
+            .config({
+                fileCache: true,
+                appendExt: 'jpeg'
+            }).fetch(
+                'GET', this.props.route.params.link
+            ).then((res) =>{
+                CameraRoll.saveToCameraRoll(res.path());
+            }).then(() => {
+                Alert.alert('Image Saved')
+            })
     }
 
     render() {

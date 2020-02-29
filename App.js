@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import { PermissionsAndroid } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
@@ -26,6 +27,8 @@ Amplify.configure(awsconfig);
 
 //creates a stack for navigation
 const Stack = createStackNavigator();
+
+
 
 //functional component to handle the stack navigation
 const App = () => {

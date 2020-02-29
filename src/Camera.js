@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Dimensions, Alert, PermissionsAndroid, Platform } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { Icon, Slider } from 'react-native-elements';
 import { Storage } from 'aws-amplify';
 import { useIsFocused } from '@react-navigation/native';
+import CameraRoll from "@react-native-community/cameraroll";
 
 
 class CameraView extends React.Component {
@@ -24,16 +25,35 @@ class CameraView extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.requestCameraPermission();
         //determines the width and height of the camera preview on startup
         this.setState({
             height: Dimensions.get('window').height, 
             width: Dimensions.get('window').width
         });
-
     }
+      
+    requestCameraPermission = async() => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    'title': 'Cool Photo App Camera Permission',
+                    'message': 'Cool Photo App needs access to your camera ' +
+                                'so you can take awesome pictures.'
+                }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can store data")
+            } else {
+                console.log("Storage permission denied")
+            }
+        } catch (err) {
+            console.warn(err)
+        }
+    }  
     
-
     //swaps between the picture and video mode
     swapMode = () => {
         if (this.state.swap_icon == 'camera-alt')
@@ -68,7 +88,7 @@ class CameraView extends React.Component {
             //logs an error if one occers
             Storage.put(title, blob, {
                 contentType: 'image/jpeg',})
-            .catch(err => Alert.alert(err));
+                .catch(err => Alert.alert(err));
         } else {
             Alert.alert('Camera Unavailable');
         }

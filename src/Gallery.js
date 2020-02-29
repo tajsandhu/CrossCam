@@ -33,7 +33,6 @@ class GalleryView extends React.Component {
                 list.push(data[d])
             }
             this.setState({images: list})
-            console.log(list.map(image => image[0]))
         })
     }
 
