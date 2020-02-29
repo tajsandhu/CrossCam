@@ -4,7 +4,6 @@ import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/R
 import FastImage from 'react-native-fast-image';
 import { Icon } from 'react-native-elements';
 import CameraRoll from "@react-native-community/cameraroll";
-import { RNFetchBlob } from 'rn-fetch-blob';
 import { Storage } from 'aws-amplify';
 
 export default class FullImage extends React.Component {
@@ -30,15 +29,6 @@ export default class FullImage extends React.Component {
             .then(() => this.props.route.params.refreshFunction())
             .then(() => this.props.navigation.navigate('Gallery'))
             .catch(() => Alert.alert('Deletion Failed'));
-    }
-
-    downloadImage = () => {
-        let dirs = RNFetchBlob.fs.dirs;
-        RNFetchBlob
-            .config({
-                path: dirs.DownloadDir + "/path-to-file.png",
-                fileCache: true,
-            }).fetch('GET', this.props.route.params.link)
     }
 
     render() {

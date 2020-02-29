@@ -11,10 +11,8 @@ class GalleryView extends React.Component {
         this.state = {
             images: '',
             width: Dimensions.get('window').width,
-            listView: <View/>
         }
         this.images = [];
-        this.list = [];
     }
 
     async componentDidMount() {
@@ -30,10 +28,12 @@ class GalleryView extends React.Component {
         }
         //appends these urls to a list
         await getList().then(data => {
+            var list = []
             for (var d in data) {
-                this.list.push(data[d])
+                list.push(data[d])
             }
-            this.setState({images: this.list})
+            this.setState({images: list})
+            console.log(list.map(image => image[0]))
         })
     }
 
@@ -46,6 +46,7 @@ class GalleryView extends React.Component {
 
     //creates a list of the names of all images
     getList = async() => {
+        this.images = []
         //returns a promise with a list of image names
         await Storage.list('', { level: 'public' })
             .then((result) => {
@@ -61,28 +62,25 @@ class GalleryView extends React.Component {
     }
 
     refresh = async() => {
-        /*await this.refreshList()
-        .then(() => this.forceUpdate())
-        .catch(() => Alert.alert('Refresh Failed'))*/
+        await this.refreshList()
+        .catch(() => Alert.alert('Refresh Failed'))
     }
 
     render() {
         return(
-            <View style={{flex: 1}}>
-                <FlatList
-                    data={this.state.images}
-                    numColumns={3}
-                    renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => this.expandImage(item)}
-                            style={[{width: (this.state.width/3), height: (this.state.width/3)}, styles.image_pane]}>
-                            <FastImage
-                                style={styles.image}
-                                source={{uri:item[1]}}
-                            />
-                        </TouchableOpacity>
-                    )}
-                />
-            </View>
+            <FlatList
+                data={this.state.images}
+                numColumns={3}
+                renderItem={({item}) => (
+                    <TouchableOpacity onPress={() => this.expandImage(item)}
+                        style={[{width: (this.state.width/3), height: (this.state.width/3)}, styles.image_pane]}>
+                        <FastImage
+                            style={styles.image}
+                            source={{uri:item[1]}}
+                        />
+                    </TouchableOpacity>
+                )}
+            />
 
         )
     }

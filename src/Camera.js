@@ -68,8 +68,7 @@ class CameraView extends React.Component {
             //logs an error if one occers
             Storage.put(title, blob, {
                 contentType: 'image/jpeg',})
-            .then (result => console.log(result))
-            .catch(err => console.log(err));
+            .catch(err => Alert.alert(err));
         } else {
             Alert.alert('Camera Unavailable');
         }
