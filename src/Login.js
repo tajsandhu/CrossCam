@@ -1,34 +1,50 @@
 import React from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Input, Button, Icon, Text, Image } from 'react-native-elements';
+import { View, StyleSheet, Alert, ActivityIndicator, Dimensions } from 'react-native';
+import { Input, Button, Icon, Text, Image, Overlay } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
-import CameraIcon from '../res/camera_icon.png';
 
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            overlayVisible: false,
+            screenWidth: Dimensions.get('screen').width
         }
     }
 
     //Signs in the user
     signIn = async() => {
         if (this.state.email != '' && this.state.password != '') {
-            //auth returns a promise after a successful sign in
-            //otherwise an error is thrown
-            await Auth.signIn(this.state.email, this.state.password)
-                .then(() => this.props.navigation.navigate('Camera'))
-                .catch(() => Alert.alert('Invalid Username or Password'));
+            this.setState({overlayVisible: true}, async() => {
+                await Auth.signIn(this.state.email, this.state.password)
+                    .then(() => this.props.navigation.navigate('Camera'))
+                    .then(() => this.setState({overlayVisible: false}))
+                    .catch(() => {
+                        this.setState({overlayVisible: false}, () =>
+                        Alert.alert('Invalid Username or Password')
+                        )});
+            })
         } else {
             Alert.alert('Please fill all fields');
         }
     }
 
+    Login = async() => {
+        this.setState({overlayVisible: true}, () => {
+            this.signIn()
+        })
+    }
+
     render() {
         return (
             <View style={styles.main_view}>
+                <Overlay 
+                    overlayStyle={styles.loading_container}
+                    isVisible={this.state.overlayVisible}>
+                    <ActivityIndicator size='large'/>
+                </Overlay>
                 <Image 
                     source={require('../res/camera_icon.png')}
                     style={{width: 150, height: 150}}/>
@@ -64,7 +80,7 @@ export default class Login extends React.Component {
                     onPress={() => this.signIn()} 
                     containerStyle={{width: '95%'}}
                     buttonStyle={styles.button}/>  
-                <Text  style={styles.text}>Forgot Password?</Text>
+                <Text style={styles.text}>Forgot Password?</Text>
                 <Text style={[styles.text, styles.register_text]} onPress={()=>{this.props.navigation.navigate('Signup')}} >Need an account? Register</Text>
             </View>
         )
@@ -99,6 +115,12 @@ const styles = StyleSheet.create({
     register_text: {
         bottom: 15,
         position: 'absolute'
+    },
+    loading_container: {
+        alignItems: 'center', 
+        justifyContent: 'center',
+        height: 60,
+        width: 60
     }
 
 })

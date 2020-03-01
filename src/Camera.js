@@ -16,7 +16,6 @@ class CameraView extends React.Component {
             width: 0,
             recording: false,
             capture_button_color: 'white',
-            capture_mode: 'picture',
             swap_icon: 'camera-alt',
             focus: false,
             zoom: 0,
@@ -53,14 +52,6 @@ class CameraView extends React.Component {
             console.warn(err)
         }
     }  
-    
-    //swaps between the picture and video mode
-    swapMode = () => {
-        if (this.state.swap_icon == 'camera-alt')
-            this.setState({swap_icon: 'videocam', capture_mode: 'video'});
-        else
-            this.setState({swap_icon: 'camera-alt', capture_mode: 'picture'})
-    }
 
     getCurrentDate = () => {
         var date = new Date().getDate();
@@ -92,36 +83,6 @@ class CameraView extends React.Component {
         } else {
             Alert.alert('Camera Unavailable');
         }
-    }
-
-    /* TODO: implement auth storage */
-    //records a video
-    takeVideo = async() => {
-        if (this.camera) {
-            if (this.state.recording == false) {
-                //change the state to reflect a new recording starting
-                this.setState({recording: true, capture_button_color: 'red'});
-                //begins a recording and returns a promise on completion
-                const data = await this.camera.recordAsync({quality: .5});
-                //for testing only, displays the uri
-                Alert.alert(data.uri)
-            } else {
-                //change the state to reflect on a recording ending
-                this.setState({recording: false, capture_button_color: 'white'});
-                //ends a recording and allows recordAsync to return the promise
-                this.camera.stopRecording();
-            }
-        } else {
-            Alert.alert('Camera Unavailable');
-        }
-    }
-
-    //selects between image and video capture when the capture button is selected
-    capture = async() => {
-        if (this.state.capture_mode == 'picture')
-            await this.takePicture();
-        else
-            await this.takeVideo();
     }
 
     flash = async() => {
@@ -159,18 +120,11 @@ class CameraView extends React.Component {
                         size={45}
                         />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.capture} style={styles.capture_button}>
+                <TouchableOpacity onPress={this.takePicture} style={styles.capture_button}>
                     <Icon  
                         name='camera'
                         color={this.state.capture_button_color}
                         size={60}
-                        />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.swapMode} style={styles.swap_button}>
-                    <Icon 
-                        name={this.state.swap_icon}
-                        color='white'
-                        size={30}
                         />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Gallery')} style={styles.gallery_button}>
@@ -207,12 +161,6 @@ const styles = StyleSheet.create({
     capture_button: {
         position: 'absolute',
         bottom: 15
-    },
-
-    swap_button: {
-        position: 'absolute',
-        bottom: 15,
-        right: 15,
     },
 
     gallery_button: {

@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements';
 import CameraRoll from "@react-native-community/cameraroll";
 import { Storage } from 'aws-amplify';
 import RNFetchBlob from 'react-native-fetch-blob';
+import Toast from 'react-native-simple-toast';
 
 export default class FullImage extends React.Component {
     constructor(props) {
@@ -36,14 +37,10 @@ export default class FullImage extends React.Component {
         await RNFetchBlob
             .config({
                 fileCache: true,
-                appendExt: 'jpeg'
-            }).fetch(
-                'GET', this.props.route.params.link
-            ).then((res) =>{
-                CameraRoll.saveToCameraRoll(res.path());
-            }).then(() => {
-                Alert.alert('Image Saved')
-            })
+                appendExt: 'jpeg'})
+            .fetch('GET', this.props.route.params.link)
+            .then((res) => CameraRoll.saveToCameraRoll(res.path()))
+            .then(() => Toast.show('Photo Saved'));
     }
 
     render() {
