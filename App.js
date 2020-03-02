@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import { PermissionsAndroid } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
@@ -19,9 +18,8 @@ import Gallery from './src/Gallery';
 import FullImage from './src/FullImage';
 import Settings from './src/Settings';
 import Login from './src/Login';
-import AuthLoading from './src/AuthLoading';
+import SplashScreen from './src/SplashScreen';
 import Signup from './src/Signup';
-import Confirm from './src/Confirm';
 
 Amplify.configure(awsconfig);
 
@@ -35,14 +33,13 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={'Loading'}>
-        <Stack.Screen name='Loading' component={AuthLoading} />
+        <Stack.Screen name='Loading' component={SplashScreen} options={{headerShown: false}}/>
         <Stack.Screen name='Camera' component={Camera} options={{headerShown: false}}/>
         <Stack.Screen name='Login' component={Login} options={{headerShown: false}}/>
         <Stack.Screen name='Gallery' component={Gallery} />
         <Stack.Screen name='Image' component={FullImage} />
         <Stack.Screen name='Settings' component={Settings} />
         <Stack.Screen name='Signup' component={Signup} />
-        <Stack.Screen name='Confirm' component={Confirm} />
       </Stack.Navigator>
     </NavigationContainer>
   )

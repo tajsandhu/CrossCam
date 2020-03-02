@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { Auth } from 'aws-amplify';
+import { getUserName } from './Utils';
 
-export default class AuthLoading extends React.Component {
+export default class SplashScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,13 +20,12 @@ export default class AuthLoading extends React.Component {
             })
     }
 
+    //determines if a user is logged in or not
     getAuthStatus = async() =>{
         return Auth.currentAuthenticatedUser()
             .then(() => {return true})
             .catch(() => {return false})
     }
-
-
 
     render() {
         return(

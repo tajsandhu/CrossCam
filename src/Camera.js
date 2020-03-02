@@ -4,7 +4,7 @@ import { RNCamera } from 'react-native-camera';
 import { Icon, Slider } from 'react-native-elements';
 import { Storage } from 'aws-amplify';
 import { useIsFocused } from '@react-navigation/native';
-import CameraRoll from "@react-native-community/cameraroll";
+import { getCurrentDate } from './Utils';
 
 
 class CameraView extends React.Component {
@@ -33,6 +33,7 @@ class CameraView extends React.Component {
         });
     }
       
+    //requests permission to use the users camera on android
     requestCameraPermission = async() => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -53,17 +54,6 @@ class CameraView extends React.Component {
         }
     }  
 
-    getCurrentDate = () => {
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-        var hour = new Date().getHours();
-        var minute = new Date().getMinutes();
-        var second = new Date().getSeconds();
-        var mili = new Date().getMilliseconds();
-        return ''.concat(date, '-', month, '-', year, '-', hour, ':', second, ':', mili);
-    }
-
     //captures an image and stores it in s3
     takePicture = async() => {
         if (this.camera) {
@@ -74,7 +64,7 @@ class CameraView extends React.Component {
             //retrieves image from the uri
             const blob = await respone.blob();
 
-            const title = ''.concat(this.getCurrentDate(), '.jpeg');
+            const title = ''.concat(getCurrentDate(), '.jpeg');
             //stores the image in an s3 bucket
             //logs an error if one occers
             Storage.put(title, blob, {
@@ -85,6 +75,7 @@ class CameraView extends React.Component {
         }
     }
 
+    //used to toggle between flash settings
     flash = async() => {
         if (this.state.flash == 'auto') {
             this.setState({flash: 'on', flash_icon: 'flash'})

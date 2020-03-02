@@ -5,9 +5,11 @@ import { Auth } from 'aws-amplify'
 
 export default class Settings extends React.Component {
 
+    //logs the user out and returns them to to login screen
     logout = async() => {
         await Auth.signOut().then(data => this.props.navigation.navigate('Login'));
     }
+    
     render() {
         return (
             <View style={styles.settings_list}>

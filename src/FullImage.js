@@ -26,6 +26,7 @@ export default class FullImage extends React.Component {
         });
     }
 
+    //deletes the selected image
     deleteImage = async() => {
         await Storage.remove(this.props.route.params.name)
             .then(() => this.props.route.params.refreshFunction())
@@ -33,6 +34,7 @@ export default class FullImage extends React.Component {
             .catch(() => Alert.alert('Deletion Failed'));
     }
 
+    //downloads the image to the users device gallery
     downloadImage = async() => {
         await RNFetchBlob
             .config({

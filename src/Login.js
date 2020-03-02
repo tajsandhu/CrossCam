@@ -3,6 +3,8 @@ import { View, StyleSheet, Alert, ActivityIndicator, Dimensions } from 'react-na
 import { Input, Button, Icon, Text, Image, Overlay } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 
+import Confirm from './Confirm';
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +12,7 @@ export default class Login extends React.Component {
             email: '',
             password: '',
             overlayVisible: false,
+            confirmVisible: false,
             screenWidth: Dimensions.get('screen').width
         }
     }
@@ -31,10 +34,21 @@ export default class Login extends React.Component {
         }
     }
 
+    //displays the email confirmation popup
+    showConfirmation = () => {
+        this.setState({confirmVisible: true});
+    }
+
+    // closes the email confirmation popup
+    closeConfirmation = () => {
+        this.setState({confirmVisible: false});
+    }
+
+    //displays a spinner while the login process is occuring
     Login = async() => {
         this.setState({overlayVisible: true}, () => {
             this.signIn()
-        })
+        });
     }
 
     render() {
@@ -81,6 +95,10 @@ export default class Login extends React.Component {
                     containerStyle={{width: '95%'}}
                     buttonStyle={styles.button}/>  
                 <Text style={styles.text}>Forgot Password?</Text>
+                <Text style={styles.text} onPress={()=>this.showConfirmation()}>Need to confirm a code?</Text>
+                <Overlay isVisible={this.state.confirmVisible}>
+                    <Confirm close={this.closeConfirmation}/>
+                </Overlay>
                 <Text style={[styles.text, styles.register_text]} onPress={()=>{this.props.navigation.navigate('Signup')}} >Need an account? Register</Text>
             </View>
         )

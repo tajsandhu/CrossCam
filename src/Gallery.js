@@ -56,10 +56,12 @@ class GalleryView extends React.Component {
             });
     }
 
+    //expands the image to full screen mode
     expandImage = (data) => {
         this.props.navigation.navigate('Image', {name: data[0], link: data[1], refreshFunction: this.refresh});
     }
 
+    //rerenders the view after an image is deleted
     refresh = async() => {
         await this.refreshList()
         .catch(() => Alert.alert('Refresh Failed'))

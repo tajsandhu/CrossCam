@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Input, Button, Icon, Text, Image } from 'react-native-elements';
+import { Input, Button, Icon } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 
 export default class Signup extends React.Component {
@@ -9,7 +9,8 @@ export default class Signup extends React.Component {
         this.state = {
             email: '',
             password: '',
-            confirm: ''
+            confirm: '',
+            confirmVisible: false,
         }
     }
 
@@ -22,7 +23,7 @@ export default class Signup extends React.Component {
             await Auth.signUp({
                 username: this.state.email,
                 password: this.state.password})
-                .then(() => this.props.navigation.navigate('Confirm'))
+                .then(() => this.props.navigation.navigate('Login'))
                 .catch(() => Alert.alert('Sign up unsuccessful'));
         } else {
             Alert.alert('Please fill all fields');

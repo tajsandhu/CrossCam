@@ -20,7 +20,7 @@ export default class Confirm extends React.Component {
             await Auth.confirmSignUp(
                 this.state.email,
                 this.state.code)
-                .then(() => this.props.navigation.navigate('Login'))
+                .then(() => this.props.close())
                 .catch(() => Alert.alert('Code and email do not match'));
         } else {
             Alert.alert('Please fill all fields');
@@ -61,6 +61,10 @@ export default class Confirm extends React.Component {
                     onPress={() => this.confirm()} 
                     containerStyle={{width: '95%'}}
                     buttonStyle={styles.button}/>  
+                <Button title='Cancel'
+                    onPress={() => this.props.close()} 
+                    containerStyle={{width: '95%'}}
+                    buttonStyle={styles.button}/>  
             </View>
         )
     }
@@ -82,5 +86,6 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#fc5185',
+        marginBottom: 5
     },
 })
