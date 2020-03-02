@@ -47,7 +47,7 @@ Now run the using ```react-native run-ios``` on IOS or ```react-native run=andro
 
 ## Authors
 
-* **Tajbir Sange** - [SandManTaj](https://github.com/SandManTaj)
+* **Tajbir Sandhu** - [SandManTaj](https://github.com/SandManTaj)
 
 ## License
 
